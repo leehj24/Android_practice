@@ -1,111 +1,95 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    EditText Edit1, Edit2;
-    Button btnAdd, btnSub, btnMul, btnDiv, btnExt;
-    TextView textResult;
-    String num1, num2;
-    Float result;
+    TextView text1, text2;
+    Switch switch1;
+    RadioGroup group;
+    RadioButton radio1, radio2, radio3;
+    Button button1, button2;
+    ImageView img;
 
-    @Override /*오버라이드 오버로드 차이 알기*/
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("초간단 계산기(수정)");
+        setTitle("안드로이드 사진 보기");
 
-        Edit1=(EditText) findViewById(R.id.Edit1);
-        Edit2=(EditText) findViewById(R.id.Edit2);
+        text1 = findViewById(R.id.text1);
+        switch1 = findViewById(R.id.switch1);
 
-        btnAdd=(Button) findViewById(R.id.BtnAdd);
-        btnSub=(Button) findViewById(R.id.BtnSub);
-        btnMul=(Button) findViewById(R.id.BtnMul);
-        btnDiv=(Button) findViewById(R.id.BtnDiv);
-        btnExt=(Button) findViewById(R.id.BtnExt);
+        text2 = findViewById(R.id.text2);
+        group = findViewById(R.id.group);
+        radio1 = findViewById(R.id.radio1);
+        radio2 = findViewById(R.id.radio2);
+        radio3 = findViewById(R.id.radio3);
 
-        textResult=(TextView) findViewById(R.id.TextResult);
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
 
-        btnAdd.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
-                num1=Edit1.getText().toString();
-                num2=Edit2.getText().toString();
-                if (num1.trim().equals("")||num2.trim().equals("")){
-                    Toast myToast = Toast.makeText(getApplicationContext(),"입력 값이 비었습니다.", Toast.LENGTH_SHORT);
-                    myToast.show();
+        img = findViewById(R.id.img);
+
+        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (switch1.isChecked() == true) {
+                    text2.setVisibility(View.VISIBLE);
+                    group.setVisibility(View.VISIBLE);
+                    button1.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.VISIBLE);
+                    img.setVisibility(View.VISIBLE);
                 } else {
-                    result=Float.parseFloat(num1) + Float.parseFloat(num2);
-                    textResult.setText("계산 결과 : " + result.toString());
+                    text2.setVisibility(View.INVISIBLE);
+                    group.setVisibility(View.INVISIBLE);
+                    button1.setVisibility(View.INVISIBLE);
+                    button2.setVisibility(View.INVISIBLE);
+                    img.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (group.getCheckedRadioButtonId()) {
+                    case R.id.radio1:
+                        img.setImageResource(R.drawable.q10);
+                        break;
+                    case R.id.radio2:
+                        img.setImageResource(R.drawable.r11);
+                        break;
+                    case R.id.radio3:
+                        img.setImageResource(R.drawable.s12);
+                        break;
                 }
             }
         });
 
-        btnSub.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
-                num1=Edit1.getText().toString();
-                num2=Edit2.getText().toString();
-                if(num1.trim().equals("")||num2.trim().equals("")){
-                    Toast myToast = Toast.makeText(getApplicationContext(),"입력 값이 비었습니다.", Toast.LENGTH_SHORT);
-                    myToast.show();
-                } else {
-                    result=Float.parseFloat(num1) - Float.parseFloat(num2);
-                    textResult.setText("계산 결과 : " + result.toString());
-                }
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
-        btnMul.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
-                num1=Edit1.getText().toString();
-                num2=Edit2.getText().toString();
-                if (num1.trim().equals("")||num2.trim().equals("")){
-                    Toast myToast = Toast.makeText(getApplicationContext(),"입력 값이 비었습니다.", Toast.LENGTH_SHORT);
-                    myToast.show();
-                } else {
-                    result=Float.parseFloat(num1) * Float.parseFloat(num2);
-                    textResult.setText("계산 결과 : " + result.toString());
-                }
-            }
-        });
-
-        btnDiv.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
-                num1=Edit1.getText().toString();
-                num2=Edit2.getText().toString();
-                String zero="0";
-                if(num1.trim().equals("")||num2.trim().equals("")){
-                    Toast myToast=Toast.makeText(getApplicationContext(), "입력 값이 비었습니다.", Toast.LENGTH_SHORT);
-                    myToast.show();
-                } else if(num2.equals(zero)){
-                    Toast myToast = Toast.makeText(getApplicationContext(),"0으로 나눌 수 없습니다.", Toast.LENGTH_SHORT);
-                    myToast.show();
-                } else {
-                    result=Float.parseFloat(num1) / Float.parseFloat(num2);
-                    textResult.setText("계산 결과 : " + result.toString());
-                }
-            }
-        });
-
-        btnExt.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
-                num1=Edit1.getText().toString();
-                num2=Edit2.getText().toString();
-                if(num1.trim().equals("")||num2.trim().equals("")){
-                    Toast myToast = Toast.makeText(getApplicationContext(), "입력 값이 비었습니다.", Toast.LENGTH_SHORT);
-                    myToast.show();
-                } else {
-                    result=Float.parseFloat(num1) % Float.parseFloat(num2);
-                    textResult.setText("계산 결과 : " + result.toString());
-                }
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch1.setChecked(false);
+                radio1.setChecked(false);
+                radio2.setChecked(false);
+                radio3.setChecked(false);
+                img.setImageResource(0);
             }
         });
     }
