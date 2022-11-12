@@ -17,170 +17,102 @@ import android.view.View;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    final static int LINE = 1, CIRCLE = 2;
-    final static int RECT = 3;
-    final static int red = 4, blue = 5, green = 6;
-    static int shape  = LINE;
-    static int color = red;
-
+    final static int LINE = 1, CIRCLE = 2, RECTANGLE = 3;
+    static int curShape = LINE;
+    static int curColor = Color.DKGRAY;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new MyPaintView(this));
-        setTitle("간단 그림판");
+        setContentView(new MyGraphicView(this));
+        setTitle("간단 그림판 (개선)");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
-        menu.add(0,1,0,"선 그리기");
+        menu.add(0, 1, 0, "선 그리기");
         menu.add(0, 2, 0, "원 그리기");
-        menu.add(0, 3, 0, "직사각형 그리기");
-        // 그룹id, 메뉴id, 순서, 원하는 텍스트
-
-        SubMenu submenu = menu.addSubMenu("색상 변경 >>");
-        submenu.add(0,4,0,"빨강");
-        submenu.add(0,5,0,"파랑");
-        submenu.add(0,6,0,"초록");
-        //색상변경을 도와주는 서브메뉴만들기
-
+        menu.add(0, 3, 0, "사각형 그리기");
+        SubMenu sMenu = menu.addSubMenu("색상 변경 >>");
+        sMenu.add(0, 4, 0, "빨강");
+        sMenu.add(0, 5, 0, "초록");
+        sMenu.add(0, 6, 0, "파랑");
         return true;
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-
-        switch (item.getItemId()){
-            case LINE:
-                shape = LINE;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 1:
+                curShape = LINE; // 선
                 return true;
-            case CIRCLE:
-                shape = CIRCLE;
+            case 2:
+                curShape = CIRCLE; // 원
                 return true;
-            case RECT:
-                shape = RECT;
+            case 3:
+                curShape = RECTANGLE; // 사각형
                 return true;
-            case red:
-                color = red;
+            case 4:
+                curColor = Color.RED;
                 return true;
-            case blue:
-                color = blue;
+            case 5:
+                curColor = Color.GREEN;
                 return true;
-            case green:
-                color = green;
+            case 6:
+                curColor = Color.BLUE;
                 return true;
-
-
-
         }
-
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
-    public static class MyPaintView extends View{
-        ArrayList<MyShape> myShapeArrayList = new ArrayList<>();
+    private static class MyGraphicView extends View {
+        int startX = -1, startY = -1, stopX = -1, stopY = -1;
 
-        MyShape currentShape;
-        int startX= -1;
-        int startY= -1;
-        int stopX= -1;
-        int stopY= -1;
-
-        public MyPaintView(Context context) {
+        public MyGraphicView(Context context) {
             super(context);
         }
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
-
-            switch (event.getAction()){
-
-                case MotionEvent.ACTION_DOWN: //터치할때
-                    startX = (int)event.getX();
-                    startY = (int)event.getY();
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    startX = (int) event.getX();
+                    startY = (int) event.getY();
                     break;
-
-                case MotionEvent.ACTION_UP: // 손을 땔때
-                    stopX = (int)event.getX();
-                    stopY = (int)event.getY();
-                    this.invalidate(); // onDraw메소드로 이동
+                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_UP:
+                    stopX = (int) event.getX();
+                    stopY = (int) event.getY();
+                    this.invalidate();
+                    break;
             }
             return true;
         }
 
-
-        @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-
             Paint paint = new Paint();
             paint.setAntiAlias(true);
             paint.setStrokeWidth(5);
             paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(curColor);
 
-            currentShape = new MyShape(shape, startX, startY, stopX, stopY, paint);
-            myShapeArrayList.add(currentShape);
-
-            for(MyShape cshape: myShapeArrayList)
-                draw_shape(cshape, canvas);
-
-            if(currentShape != null)
-                draw_shape(currentShape, canvas);
-
-        }
-
-        public void draw_shape(MyShape myshape, Canvas canvas) {
-
-            switch (myshape.shape_type) {
-
+            switch (curShape) {
                 case LINE:
-                    canvas.drawLine(myshape.startX, myshape.startY, myshape.stopX, myshape.stopY, myshape.paint);
+                    canvas.drawLine(startX, startY, stopX, stopY, paint);
                     break;
                 case CIRCLE:
-                    int radius = (int) Math.sqrt(Math.pow(myshape.stopX - myshape.startX, 2) + Math.pow(myshape.stopY - myshape.startY, 2));
-                    canvas.drawCircle(myshape.startX, myshape.startY, radius,myshape.paint);
+                    int radius = (int) Math.sqrt(Math.pow(stopX - startX, 2)
+                            + Math.pow(stopY - startY, 2));
+                    canvas.drawCircle(startX, startY, radius, paint);
                     break;
-                case RECT:
-                    Rect rect = new Rect(myshape.startX,myshape.startY, myshape.stopX, myshape.stopY);
-                    canvas.drawRect(rect, myshape.paint);
+                case RECTANGLE:
+                    Rect rect = new Rect(startX, startY, stopX, stopY);
+                    canvas.drawRect(rect, paint);
                     break;
             }
         }
 
-
-        // 그려진 정보를 저장하는 MyShape클래스
-        private static class MyShape {
-
-            int shape_type, startX, startY, stopX, stopY;
-            Paint paint;
-
-            public MyShape(int shape_type, int startX, int startY, int stopX, int stopY, Paint paint) {
-
-                this.shape_type = shape_type;
-                this.startX = startX;
-                this.startY = startY;
-                this.stopX = stopX;
-                this.stopY = stopY;
-                this.paint = paint;
-
-                switch (color){
-
-                    case red:
-                        paint.setColor(Color.RED);
-                        break;
-                    case blue:
-                        paint.setColor(Color.BLUE);
-                        break;
-                    case green:
-                        paint.setColor(Color.GREEN);
-                        break;
-                }
-            }
-        }
     }
-
 }
