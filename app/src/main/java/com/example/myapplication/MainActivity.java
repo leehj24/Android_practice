@@ -17,102 +17,125 @@ import android.view.View;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    final static int LINE = 1, CIRCLE = 2, RECTANGLE = 3;
-    static int curShape = LINE;
-    static int curColor = Color.DKGRAY;
+    private ImageButton ibZoomIn, ibZoomOut, ibRotate, ibBright, ibDark, ibGray;
+    private MyGraphicView graphicView;
+    // 축척으로 사용될 전역변수 2개를 선언
+    private static float scaleX = 1, scaleY = 1;
+    // 회전 각도로 사용될 전역변수 선언
+    private static float angle = 0;
+    // 색상 배수로 사용될 전역변수 선언
+    private static float color = 1;
+    // 채도 배수로 사용된 전역변수 선언
+    private static float saturation = 1;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new MyGraphicView(this));
-        setTitle("간단 그림판 (개선)");
+        setContentView(R.layout.activity_main);
+        setTitle("미니 포토샵");
+
+        // activity_main.xml 의 pictureLayout 을 인플레이트 한 후
+        // MyGraphicView 형 클래스 변수를 첨부
+        // 결국 아래쪽 레이아웃에는 MyGraphicView 에서 설정한 내용이 출력 됨
+        LinearLayoutCompat pictureLayout = findViewById(R.id.pictureLayout);
+        graphicView = new MyGraphicView(this);
+        pictureLayout.addView(graphicView);
+
+        init();
+        initLr();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.add(0, 1, 0, "선 그리기");
-        menu.add(0, 2, 0, "원 그리기");
-        menu.add(0, 3, 0, "사각형 그리기");
-        SubMenu sMenu = menu.addSubMenu("색상 변경 >>");
-        sMenu.add(0, 4, 0, "빨강");
-        sMenu.add(0, 5, 0, "초록");
-        sMenu.add(0, 6, 0, "파랑");
-        return true;
+    public void init(){
+        ibZoomIn = findViewById(R.id.ibZoomIn);
+        ibZoomOut = findViewById(R.id.ibZoomOut);
+        ibRotate = findViewById(R.id.ibRotate);
+        ibBright = findViewById(R.id.ibBright);
+        ibDark = findViewById(R.id.ibDark);
+        ibGray = findViewById(R.id.ibGray);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 1:
-                curShape = LINE; // 선
-                return true;
-            case 2:
-                curShape = CIRCLE; // 원
-                return true;
-            case 3:
-                curShape = RECTANGLE; // 사각형
-                return true;
-            case 4:
-                curColor = Color.RED;
-                return true;
-            case 5:
-                curColor = Color.GREEN;
-                return true;
-            case 6:
-                curColor = Color.BLUE;
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void initLr(){
+        // 확대 버튼을 클릭할 때마다 축척 전역변수가 0.2씩 증가함
+        ibZoomIn.setOnClickListener(v -> {
+            scaleX = scaleX + 0.2f;
+            scaleY = scaleY + 0.2f;
+            // 확대를 위해서 onDraw( ) 메서드를 다시 호출해야하는데
+            // 뷰의 invalidate( ) 메서드는 onDraw( )를 자동으로 호출함
+            graphicView.invalidate();
+        });
+        // 확대 버튼을 클릭할 때마다 축척 전역변수가 0.2씩 감소함
+        ibZoomOut.setOnClickListener(v -> {
+            scaleX = scaleX - 0.2f;
+            scaleY = scaleY - 0.2f;
+            graphicView.invalidate();
+        });
+        // 회전하기 버튼을 클릭할 때마다 회전각도가 20도씩 증가함
+        ibRotate.setOnClickListener(v -> {
+            angle = angle + 20;
+            graphicView.invalidate();
+        });
+        // 밝게하기 버튼을 클릭할 때마다 밝기가 0.2배씩 증가함
+        ibBright.setOnClickListener(v -> {
+            color = color + 0.2f;
+            graphicView.invalidate();
+        });
+        // 어둡게하기 버튼을 클릭할 때마다 밝기가 0.2배씩 감소함
+        ibDark.setOnClickListener(v -> {
+            color = color - 0.2f;
+            graphicView.invalidate();
+        });
+        // 회색영상 버튼을 클릭할 때마다 채도가 1이면 0으로, 0이면 1로 변경
+        ibGray.setOnClickListener(v -> {
+            if(saturation == 0) {
+                saturation = 1;
+            } else {
+                saturation = 0;
+            }
+            graphicView.invalidate();
+        });
     }
 
+    // MyGraphicView 클래스를 정의
     private static class MyGraphicView extends View {
-        int startX = -1, startY = -1, stopX = -1, stopY = -1;
-
         public MyGraphicView(Context context) {
             super(context);
         }
 
         @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    startX = (int) event.getX();
-                    startY = (int) event.getY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                case MotionEvent.ACTION_UP:
-                    stopX = (int) event.getX();
-                    stopY = (int) event.getY();
-                    this.invalidate();
-                    break;
-            }
-            return true;
-        }
-
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+
+            // 화면(뷰)의 중앙을 구하고
+            // 전역변수에 설정된 값으로 캔버스의 축척을 설정
+            int cenX = this.getWidth() / 2;
+            int cenY = this.getHeight() / 2;
+            canvas.scale(scaleX, scaleY, cenX, cenY);
+            // 전역변수에 설정된 각도로 캔버스를 회전시킴
+            canvas.rotate(angle, cenX, cenY);
+
             Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setStrokeWidth(5);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(curColor);
+            float[] array = { color, 0, 0, 0, 0,
+                    0, color, 0, 0, 0,
+                    0, 0, color, 0, 0,
+                    0, 0, 0, 1, 0,};
 
-            switch (curShape) {
-                case LINE:
-                    canvas.drawLine(startX, startY, stopX, stopY, paint);
-                    break;
-                case CIRCLE:
-                    int radius = (int) Math.sqrt(Math.pow(stopX - startX, 2)
-                            + Math.pow(stopY - startY, 2));
-                    canvas.drawCircle(startX, startY, radius, paint);
-                    break;
-                case RECTANGLE:
-                    Rect rect = new Rect(startX, startY, stopX, stopY);
-                    canvas.drawRect(rect, paint);
-                    break;
+            ColorMatrix cm = new ColorMatrix(array);
+            // setSaturation( ) 메서드가 실행되면 위에 설정된 ColorMatrix
+            if(saturation == 0) {
+                cm.setSaturation(saturation);
             }
-        }
 
+            paint.setColorFilter(new ColorMatrixColorFilter(cm));
+
+            Bitmap picture =
+                    BitmapFactory.decodeResource(getResources(), R.drawable.umbrella);
+
+            int picX = (this.getWidth() - picture.getWidth()) / 2;
+            int picY = (this.getHeight() - picture.getHeight()) / 2;
+
+            canvas.drawBitmap(picture, picX, picY, paint);
+
+            picture.recycle();
+        }
     }
 }
