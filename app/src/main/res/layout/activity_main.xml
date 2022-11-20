@@ -1,53 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <LinearLayout
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:id="@+id/iconLayout"
-        android:layout_weight="1">
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/zoomin"
-            android:src="@drawable/zoom_in"/>
-        <ImageButton
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/rdoSecond"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/zoomout"
-            android:src="@drawable/zoom_out"/>
-        <ImageButton
+            android:checked="true"
+            android:text="Second 액티비티" />
+
+        <RadioButton
+            android:id="@+id/rdoThird"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rotate"
-            android:src="@drawable/rotate"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/zoombright"
-            android:src="@drawable/bright"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/zoomdark"
-            android:src="@drawable/dark"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/zoomgray"
-            android:src="@drawable/gray"/>
-    </LinearLayout>
-    <LinearLayout
+            android:text="Third 액티비티" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnNewActivity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="9"
-        android:gravity="center"
-        android:id="@+id/pictureLayout"
-        android:orientation="vertical"/>
+        android:layout_height="wrap_content"
+        android:text="새 화면 열기" />
+
 </LinearLayout>
