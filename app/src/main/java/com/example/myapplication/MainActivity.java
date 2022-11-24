@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -15,50 +17,24 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("메인 엑티비티");
+        setTitle("리스트뷰 텍스트");
 
-        final EditText edtNum1 = findViewById(R.id.edtNum1);
-        final EditText edtNum2 = findViewById(R.id.edtNum2);
-        final RadioGroup rdoGroup = findViewById(R.id.rdoGroup);
-        Button btnNewActivity = findViewById(R.id.btnNewActivity);
 
-        btnNewActivity.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        final String[] mid = {"히어로즈", "24시", "로스트", "로스트륨", "스몰빌", "남청동크",
+                "빅뱅이론", "프렌즈", "덱스터", "글리", "가신걸", "테이큰", "슈퍼네추럴", "브이" };
 
-                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
-                switch (rdoGroup.getCheckedRadioButtonId()) {
-                    case R.id.rdoAdd:
-                        intent.putExtra("Calc", "+");
-                        break;
-                    case R.id.rdoSub:
-                        intent.putExtra("Calc", "-");
-                        break;
-                    case R.id.rdoMul:
-                        intent.putExtra("Calc", "*");
-                        break;
-                    case R.id.rdoDiv:
-                        intent.putExtra("Calc", "/");
-                        break;
-                    default:
-                        break;
-                }
+        ListView list = (ListView) findViewById(R.id.listView1);
 
-                intent.putExtra("Num1",
-                        Integer.parseInt(edtNum1.getText().toString()));
-                intent.putExtra("Num2",
-                        Integer.parseInt(edtNum2.getText().toString()));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, mid);
+        list.setAdapter(adapter);
 
-                startActivityForResult(intent, 0);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                Toast.makeText(getApplicationContext(), mid[arg2],
+                        Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            int hap = data.getIntExtra("Hap", 0);
-            Toast.makeText(getApplicationContext(), "결과 :" + hap,
-                    Toast.LENGTH_SHORT).show();
-        }
     }
 }

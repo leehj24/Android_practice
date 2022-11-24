@@ -1,41 +1,46 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+
+import java.util.ArrayList;
 
 public class SecondActivity extends Activity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.second);
-        setTitle("Second 액티비티");
+        setContentView(R.layout.activity_main);
 
-        Intent inIntent = getIntent();
-        String calc = (inIntent.getStringExtra("Calc"));
+        final ArrayList<String> midList = new ArrayList<String>();
+        ListView list = (ListView) findViewById(R.id.listView1);
 
-        int calValue = 0;
-        if (calc.equals("+")) {
-            calValue = inIntent.getIntExtra("Num1", 0) + inIntent.getIntExtra("Num2", 0);
-        } else if (calc.equals("-")) {
-            calValue = inIntent.getIntExtra("Num1", 0) - inIntent.getIntExtra("Num2", 0);
-        } else if (calc.equals("*")) {
-            calValue = inIntent.getIntExtra("Num1", 0) * inIntent.getIntExtra("Num2", 0);
-        } else {
-            calValue = inIntent.getIntExtra("Num1", 0) / inIntent.getIntExtra("Num2", 0);
-        }
+        final ArrayAdapter<String> adapter = new ArrayAdapter <String>(this,
+                android.R.layout.simple_list_item_1, midList);
+        list.setAdapter(adapter);
 
-        final int retValue = calValue;
+        final EditText edtItem = (EditText) findViewById(R.id.editItem);
+        Button btnAdd = (Button) findViewById(R.id.btnAdd);
 
-        Button btnReturn = findViewById(R.id.btnReturn);
-        btnReturn.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent outIntent = new Intent(getApplicationContext(), MainActivity.class);
-                outIntent.putExtra("Hap", retValue);
-                setResult(RESULT_OK, outIntent);
-                finish();
+                midList.add(edtItem.getText().toString());
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View view,int
+                                           position, long id) {
+                midList.add(edtItem.getText().toString());
+                adapter.notifyDataSetChanged();
+                return false;
             }
         });
     }
