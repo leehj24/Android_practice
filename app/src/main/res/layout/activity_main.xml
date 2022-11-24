@@ -26,8 +26,7 @@
         <ListView
             android:id="@+id/listView1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="전화걸기"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </LinearLayout>
