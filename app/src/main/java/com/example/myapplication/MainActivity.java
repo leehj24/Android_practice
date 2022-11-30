@@ -1,14 +1,16 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.app.AlertDialog;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ListView;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Gallery;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -17,24 +19,56 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("리스트뷰 텍스트");
+        setTitle("갤러리 영화 포스터(개선)");
 
+        Gallery gallery = findViewById(R.id.gallery1);
 
-        final String[] mid = {"히어로즈", "24시", "로스트", "로스트륨", "스몰빌", "남청동크",
-                "빅뱅이론", "프렌즈", "덱스터", "글리", "가신걸", "테이큰", "슈퍼네추럴", "브이" };
+        MyGalleryAdapter galAdapter = new MyGalleryAdapter(this);
+        gallery.setAdapter(galAdapter);
+    }
 
-        ListView list = (ListView) findViewById(R.id.listView1);
+    public class MyGalleryAdapter extends BaseAdapter {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mid);
-        list.setAdapter(adapter);
+        Context context;
+        Integer[] posterID = {R.drawable.mov11, R.drawable.mov12,
+                R.drawable.mov13, R.drawable.mov14, R.drawable.mov15,
+                R.drawable.mov16, R.drawable.mov17, R.drawable.mov18,
+                R.drawable.mov19, R.drawable.mov20};
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                Toast.makeText(getApplicationContext(), mid[arg2],
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+        public MyGalleryAdapter(Context c) { context = c; }
+
+        public int getCount() { return posterID.length; }
+
+        public Object getItem(int arg0) { return null; }
+
+        public long getItemId(int position) { return 0; }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView imageview = new ImageView(context);
+            imageview.setLayoutParams(new Gallery.LayoutParams(200, 300));
+            imageview.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            imageview.setPadding(5, 5, 5, 5);
+            imageview.setImageResource(posterID[position]);
+
+            final int pos = position;
+            imageview.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    ImageView ivPoster = findViewById(R.id.ivPoster);
+                    ivPoster.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    ivPoster.setImageResource(posterID[pos]);
+
+                    Toast toast = new Toast(getApplicationContext());
+                    View toastView = View.inflate(getApplicationContext(), R.layout.toast, null);
+                    TextView toastText = toastView.findViewById(R.id.textView1);
+                    toastText.setText("영화큰포스터");
+                    toast.setView(toastView);
+                    toast.show();
+
+                    return false;
+                }
+            });
+
+            return imageview;
+        }
     }
 }
