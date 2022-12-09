@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4EFDD">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/bt1"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="전체작품"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt2"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="액션"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/bt3"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="무협"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt4"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="범죄"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/bt5"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="로맨스"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt6"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="SF"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/bt7"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="판타지"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt8"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="드라마"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/bt9"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="국내"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt10"
+            android:layout_width="188dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#BEB38C"
+            android:text="국외"
+            android:textSize="30sp"
+            android:textColor="#4A3705"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

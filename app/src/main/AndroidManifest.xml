@@ -9,8 +9,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
+
         <activity
-            android:name=".toast"
+            android:name=".search"
+            android:exported="false" />
+        <activity
+            android:name=".yet"
+            android:exported="false" />
+        <activity
+            android:name=".inform"
+            android:exported="false" />
+        <activity
+            android:name=".home"
+            android:exported="false" />
+        <activity
+            android:name=".favorite"
+            android:exported="false" />
+        <activity
+            android:name=".check3"
+            android:exported="false" />
+        <activity
+            android:name=".check2"
+            android:exported="false" />
+        <activity
+            android:name=".check"
+            android:exported="false" />
+        <activity
+            android:name=".seat"
+            android:exported="false" />
+        <activity
+            android:name=".person"
+            android:exported="false" />
+        <activity
+            android:name=".day"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

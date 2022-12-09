@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".search">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="286dp"
+            android:layout_height="wrap_content"
+            android:text="MOMOKEY"
+            android:textColor="#574106"
+            android:textSize="45sp" />
+
+        <ImageView
+            android:id="@+id/sound"
+            android:layout_width="60dp"
+            android:layout_height="55dp"
+            android:src="@drawable/sound" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="7dp"
+                android:layout_height="54dp"
+                android:src="@drawable/search2" />
+        </ListView>
+    </LinearLayout>>
+</LinearLayout>
